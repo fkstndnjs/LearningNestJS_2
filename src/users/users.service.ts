@@ -3,6 +3,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import * as uuid from 'uuid';
 import { EmailService } from '../email/email.service';
+import { UserLoginDto } from './dto/user-login.dto';
 
 @Injectable()
 export class UsersService {
@@ -40,6 +41,16 @@ export class UsersService {
   }
 
   async verifyEmail(signupVerifyToken: string): Promise<string> {
+    throw new Error('Method not implemented');
+  }
+
+  async login(body: UserLoginDto) {
+    const { email, password } = body;
+
+    throw new Error('Method not implemented');
+  }
+
+  async getUserInfo(userId: string) {
     throw new Error('Method not implemented');
   }
 }
