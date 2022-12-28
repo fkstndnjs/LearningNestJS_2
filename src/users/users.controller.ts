@@ -22,12 +22,12 @@ export class UsersController {
   }
 
   @Post('login')
-  async login(@Body() body: UserLoginDto): Promise<string> {
+  async login(@Body() body: UserLoginDto) {
     return await this.usersService.login(body);
   }
 
   @Get(':id')
-  async getUserInfo(@Param('id') userId: string): Promise<UserInfo> {
+  async getUserInfo(@Param('id') userId: string) {
     return await this.usersService.getUserInfo(userId);
   }
 }
