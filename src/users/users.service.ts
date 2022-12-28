@@ -38,4 +38,8 @@ export class UsersService {
       signupVerifyToken,
     );
   }
+
+  async verifyEmail(signupVerifyToken: string): Promise<string> {
+    throw new Error('Method not implemented');
+  }
 }
