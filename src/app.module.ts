@@ -7,7 +7,7 @@ import { UsersModule } from './users/users.module';
   imports: [
     UsersModule,
     ConfigModule.forRoot({
-      envFilePath: process.env.HOST === 'dev' ? '.dev.env' : '.prod.env',
+      envFilePath: process.env.NODE_ENV === 'dev' ? '.dev.env' : '.prod.env',
     }),
   ],
   controllers: [AppController],
