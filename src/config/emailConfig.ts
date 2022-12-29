@@ -1,6 +1,6 @@
 import { registerAs } from '@nestjs/config';
 
-export default registerAs('email', () => ({
+const emailConfig = registerAs('email', () => ({
   service: process.env.EMAIL_SERVICE,
   auth: {
     user: process.env.EMAIL_AUTH_USER,
@@ -8,3 +8,5 @@ export default registerAs('email', () => ({
   },
   baseUrl: process.env.EMAIL_BASE_URL,
 }));
+
+export default emailConfig;
