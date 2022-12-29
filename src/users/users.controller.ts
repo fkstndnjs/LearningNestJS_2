@@ -6,6 +6,7 @@ import {
   Get,
   Param,
   ParseIntPipe,
+  DefaultValuePipe,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -36,5 +37,13 @@ export class UsersController {
   @Get(':id')
   async getUserInfo(@Param('id', ParseIntPipe) userId: number) {
     return await this.usersService.getUserInfo(userId);
+  }
+
+  @Get()
+  getAllUsers(
+    @Query('offset', new DefaultValuePipe(0), ParseIntPipe) offset: number,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
+  ) {
+    console.log(offset, limit);
   }
 }
