@@ -1,7 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import Mail from 'nodemailer/lib/mailer';
 import * as nodemailer from 'nodemailer';
 import { config } from 'config';
+import emailConfig from '../config/emailConfig';
+import { ConfigType } from '@nestjs/config';
 
 interface EmailOptions {
   to: string;
@@ -13,7 +15,9 @@ interface EmailOptions {
 export class EmailService {
   private transporter: Mail;
 
-  constructor() {
+  constructor(
+    @Inject(emailConfig.KEY) private config: ConfigType<typeof emailConfig>,
+  ) {
     this.transporter = nodemailer.createTransport({
       service: process.env.EMAIL_SERVICE,
       auth: {
