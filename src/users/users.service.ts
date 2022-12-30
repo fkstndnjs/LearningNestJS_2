@@ -50,7 +50,7 @@ export class UsersService {
     throw new Error('Method not implemented');
   }
 
-  async getUserInfo(userId: string) {
+  async getUserInfo(userId: number) {
     throw new Error('Method not implemented');
   }
 }
