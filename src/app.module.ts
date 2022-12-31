@@ -12,7 +12,7 @@ import { UsersModule } from './users/users.module';
     ConfigModule.forRoot({
       envFilePath:
         process.env.NODE_ENV === 'dev'
-          ? `src/config/env/.dev.env`
+          ? `src/config/env/env`
           : `src/config/env/.prod.env`,
 
       load: [emailConfig],
