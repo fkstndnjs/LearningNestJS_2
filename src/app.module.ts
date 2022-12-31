@@ -13,7 +13,7 @@ import { UsersModule } from './users/users.module';
       envFilePath:
         process.env.NODE_ENV === 'dev'
           ? `src/config/env/env`
-          : `src/config/env/env`,
+          : `src/config/env/.prod.env`,
 
       load: [emailConfig],
       isGlobal: true,
