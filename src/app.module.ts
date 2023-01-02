@@ -10,10 +10,7 @@ import { UsersModule } from './users/users.module';
   imports: [
     UsersModule,
     ConfigModule.forRoot({
-      envFilePath:
-        process.env.NODE_ENV === 'dev'
-          ? `src/env/.dev.env`
-          : `src/env/.prod.env`,
+      envFilePath: process.env.NODE_ENV === 'dev' ? `.dev.env` : `.prod.env`,
       load: [emailConfig],
       isGlobal: true,
     }),
