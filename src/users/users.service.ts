@@ -6,7 +6,7 @@ import { EmailService } from '../email/email.service';
 import { UserLoginDto } from './dto/user-login.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './entities/user.entity';
-import { Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 
 @Injectable()
 export class UsersService {
@@ -14,6 +14,7 @@ export class UsersService {
     private emailService: EmailService,
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
+    private dataSource: DataSource,
   ) {}
 
   async createUser(body: CreateUserDto) {
@@ -46,12 +47,14 @@ export class UsersService {
     password: string,
     signupVerifyToken: string,
   ) {
-    const user = new UserEntity();
-    user.name = name;
-    user.email = email;
-    user.password = password;
-    user.signupVerifyToken = signupVerifyToken;
-    await this.userRepository.save(user);
+    this.dataSource.transaction(async (manager) => {
+      const user = new UserEntity();
+      user.name = name;
+      user.email = email;
+      user.password = password;
+      user.signupVerifyToken = signupVerifyToken;
+      await this.userRepository.save(user);
+    });
   }
 
   async findByName(id: number) {}
