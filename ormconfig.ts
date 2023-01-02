@@ -1,14 +1,14 @@
 import { DataSource } from 'typeorm';
 
-export const AppDataSource = new DataSource({
+export default new DataSource({
   type: 'mysql',
   host: 'localhost',
   port: 3306,
   username: 'root',
   password: 'password',
   database: 'test',
-  entities: [__dirname + '/**/*.entity{.ts, .js}'],
+  entities: ['src/**/*.entity{.ts, .js}'],
   synchronize: false,
-  migrations: [__dirname + '/**/migrations/*.js'],
+  migrations: ['src/migrations/*{.js, .ts}'],
   migrationsTableName: 'migrations',
 });
