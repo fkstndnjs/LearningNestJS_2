@@ -4,10 +4,17 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import * as uuid from 'uuid';
 import { EmailService } from '../email/email.service';
 import { UserLoginDto } from './dto/user-login.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { UserEntity } from './entities/user.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class UsersService {
-  constructor(private emailService: EmailService) {}
+  constructor(
+    private emailService: EmailService,
+    @InjectRepository(UserEntity)
+    private userRepository: Repository<UserEntity>,
+  ) {}
 
   async createUser(body: CreateUserDto) {
     const { name, password, email } = body;
@@ -21,7 +28,11 @@ export class UsersService {
   }
 
   private async checkUserExists(email: string) {
-    return false;
+    const user = await this.userRepository.findOne({
+      where: {
+        email,
+      },
+    });
   }
 
   private async saveUser(
@@ -30,8 +41,15 @@ export class UsersService {
     password: string,
     signupVerifyToken: string,
   ) {
-    return;
+    const user = new UserEntity();
+    user.name = name;
+    user.email = email;
+    user.password = password;
+    user.signupVerifyToken = signupVerifyToken;
+    await this.userRepository.save(user);
   }
+
+  async findByName(id: number) {}
 
   private async sendMemberJoinEmail(email: string, signupVerifyToken: string) {
     await this.emailService.sendMemberJoinVerification(
