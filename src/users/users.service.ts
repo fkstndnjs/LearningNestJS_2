@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, HttpException, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import * as uuid from 'uuid';
@@ -19,7 +19,10 @@ export class UsersService {
   async createUser(body: CreateUserDto) {
     const { name, password, email } = body;
 
-    await this.checkUserExists(email);
+    const userExist = await this.checkUserExists(email);
+    if (userExist) {
+      throw new ConflictException('이미 가입된 계정입니다.');
+    }
 
     const signupVerifyToken = uuid.v1();
 
@@ -33,6 +36,8 @@ export class UsersService {
         email,
       },
     });
+
+    return !!user;
   }
 
   private async saveUser(
