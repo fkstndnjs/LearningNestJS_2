@@ -14,7 +14,7 @@ import { UsersModule } from './users/users.module';
         process.env.NODE_ENV === 'dev'
           ? `src/env/.dev.env`
           : `src/env/.prod.env`,
-      load: [emailConfig, dbConfig],
+      load: [emailConfig],
       isGlobal: true,
     }),
     TypeOrmModule.forRoot({
