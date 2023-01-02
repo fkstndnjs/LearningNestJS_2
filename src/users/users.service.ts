@@ -1,4 +1,9 @@
-import { ConflictException, HttpException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  HttpException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import * as uuid from 'uuid';
@@ -53,7 +58,7 @@ export class UsersService {
       user.email = email;
       user.password = password;
       user.signupVerifyToken = signupVerifyToken;
-      await this.userRepository.save(user);
+      await manager.save(user);
     });
   }
 
