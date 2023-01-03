@@ -7,7 +7,6 @@ export default new DataSource({
   username: 'root',
   password: 'password',
   database: 'test',
-  entities: ['./**/*.entity{.ts, .js}'],
   synchronize: false,
   migrations: [__dirname + '/**/migrations/*.js'],
   migrationsTableName: 'migrations',
