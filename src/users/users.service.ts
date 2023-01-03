@@ -11,14 +11,13 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './entities/user.entity';
 import { DataSource, Repository } from 'typeorm';
 import { AuthService } from '../auth/auth.service';
-import { UserRepository } from './user.repository';
 
 @Injectable()
 export class UsersService {
   constructor(
     private emailService: EmailService,
     @InjectRepository(UserEntity)
-    private userRepository: UserRepository,
+    private userRepository: Repository<UserEntity>,
     private dataSource: DataSource,
     private authService: AuthService,
   ) {}
@@ -33,13 +32,7 @@ export class UsersService {
 
     const signupVerifyToken = uuid.v1();
 
-    // await this.saveUser(name, email, password, signupVerifyToken);
-    await this.userRepository.saveUser(
-      name,
-      email,
-      password,
-      signupVerifyToken,
-    );
+    await this.saveUser(name, email, password, signupVerifyToken);
     await this.sendMemberJoinEmail(email, signupVerifyToken);
   }
 
