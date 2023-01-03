@@ -14,12 +14,12 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload) {
-    const user = await this.userService.findById(payload.id);
+    const users = await this.userService.findById(payload.id);
 
-    if (!user) {
+    if (!users) {
       throw new BadRequestException('뭐야');
     }
 
-    return 12;
+    return users;
   }
 }
