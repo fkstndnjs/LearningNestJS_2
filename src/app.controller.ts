@@ -1,6 +1,8 @@
 import { Controller, Get, Req, UseGuards } from '@nestjs/common';
 import { AppService } from './app.service';
 import { JwtAuthGuard } from './auth/jwt/jwt.guard';
+import { CurrentUser } from './common/decorator/currentUser';
+import { UserEntity } from './users/entities/user.entity';
 
 @Controller()
 export class AppController {
@@ -8,7 +10,7 @@ export class AppController {
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  getHello(@Req() req): string {
-    return req.user;
+  getHello(@CurrentUser() user: UserEntity) {
+    return user;
   }
 }
