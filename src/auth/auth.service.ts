@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import jwt from 'jsonwebtoken';
 @Injectable()
 export class AuthService {
+  constructor(private jwtService: JwtService) {}
+
   login(user: { id: number; name: string; email: string }) {
-    return jwt.sign(user, 'secret', {
-      expiresIn: '1d',
-    });
+    return this.jwtService.sign(user);
   }
 }
