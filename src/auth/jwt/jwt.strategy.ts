@@ -7,10 +7,9 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(
-    @InjectRepository(UserEntity)
-    private userRepository: Repository<UserEntity>,
-  ) {
+  constructor() // @InjectRepository(UserEntity)
+  // private userRepository: Repository<UserEntity>,
+  {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
@@ -19,14 +18,14 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload) {
-    const user = await this.userRepository.findOne({
-      where: payload.id,
-    });
+    // const user = await this.userRepository.findOne({
+    //   where: payload.id,
+    // });
 
-    if (!user) {
-      throw new BadRequestException('뭐야');
-    }
+    // if (!user) {
+    //   throw new BadRequestException('뭐야');
+    // }
 
-    return user;
+    return 12;
   }
 }
