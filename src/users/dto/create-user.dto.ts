@@ -4,7 +4,7 @@ import { Transform } from 'class-transformer';
 import { IsEmail, IsString, MaxLength, MinLength } from 'class-validator';
 
 export class CreateUserDto {
-  @ApiProperty()
+  @ApiProperty({ description: 'The age of a cat', minimum: 1, default: 1 })
   @Transform(({ value, obj }) => {
     if (obj.password.includes(value.trim())) {
       throw new BadRequestException(
