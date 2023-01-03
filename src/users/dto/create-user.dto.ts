@@ -28,3 +28,21 @@ export class CreateUserDto {
   @IsEmail()
   email: string;
 }
+
+export class SuccessResponse {
+  @ApiProperty({
+    example: 'success',
+    description: 'status',
+  })
+  status: string;
+  @ApiProperty({
+    description: 'status',
+  })
+  message?: string;
+
+  @ApiProperty({
+    description: 'could contain some info',
+    type: CreateUserDto,
+  })
+  data?: CreateUserDto;
+}
