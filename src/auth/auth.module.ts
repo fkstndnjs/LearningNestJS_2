@@ -9,5 +9,6 @@ import { AuthService } from './auth.service';
     JwtModule.register({ secret: 'secret', signOptions: { expiresIn: '1d' } }),
   ],
   providers: [AuthService],
+  exports: [AuthService],
 })
 export class AuthModule {}
