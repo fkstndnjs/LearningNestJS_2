@@ -62,7 +62,11 @@ export class UsersService {
     });
   }
 
-  async findByName(id: number) {}
+  async findById(id: number) {
+    return await this.userRepository.findOne({
+      where: { id },
+    });
+  }
 
   private async sendMemberJoinEmail(email: string, signupVerifyToken: string) {
     await this.emailService.sendMemberJoinVerification(
