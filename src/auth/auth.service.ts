@@ -6,6 +6,6 @@ export class AuthService {
   constructor(private jwtService: JwtService) {}
 
   login(user: { id: number; name: string; email: string }) {
-    return this.jwtService.sign(user);
+    return { token: this.jwtService.sign(user) };
   }
 }
