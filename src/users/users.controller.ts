@@ -23,14 +23,18 @@ export class UsersController {
   }
 
   @Post('email-verify')
-  async verifyEmail(@Query() query: VerifyEmailDto): Promise<string> {
+  async verifyEmail(@Query() query: VerifyEmailDto): Promise<{
+    token: string;
+  }> {
     const { signupVerifyToken } = query;
 
     return await this.usersService.verifyEmail(signupVerifyToken);
   }
 
   @Post('login')
-  async login(@Body() body: UserLoginDto) {
+  async login(@Body() body: UserLoginDto): Promise<{
+    token: string;
+  }> {
     return await this.usersService.login(body);
   }
 
