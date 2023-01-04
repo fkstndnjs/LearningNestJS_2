@@ -9,28 +9,39 @@ import {
   DefaultValuePipe,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateUserDto } from './dto/create-user.dto';
+import { CreateUserDto, SuccessResponse } from './dto/create-user.dto';
 import { VerifyEmailDto } from './dto/verify-email.dto';
 import { UserLoginDto } from './dto/user-login.dto';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('user')
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  @ApiResponse({
+    status: 200,
+    description: '유저 생성',
+    type: SuccessResponse,
+  })
   @Post()
   async createUser(@Body() body: CreateUserDto): Promise<void> {
     await this.usersService.createUser(body);
   }
 
   @Post('email-verify')
-  async verifyEmail(@Query() query: VerifyEmailDto): Promise<string> {
+  async verifyEmail(@Query() query: VerifyEmailDto): Promise<{
+    token: string;
+  }> {
     const { signupVerifyToken } = query;
 
     return await this.usersService.verifyEmail(signupVerifyToken);
   }
 
   @Post('login')
-  async login(@Body() body: UserLoginDto) {
+  async login(@Body() body: UserLoginDto): Promise<{
+    token: string;
+  }> {
     return await this.usersService.login(body);
   }
 

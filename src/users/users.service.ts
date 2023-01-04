@@ -1,17 +1,16 @@
 import {
   ConflictException,
-  HttpException,
   Injectable,
-  InternalServerErrorException,
+  NotFoundException,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import * as uuid from 'uuid';
 import { EmailService } from '../email/email.service';
 import { UserLoginDto } from './dto/user-login.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './entities/user.entity';
 import { DataSource, Repository } from 'typeorm';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable()
 export class UsersService {
@@ -20,6 +19,7 @@ export class UsersService {
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
     private dataSource: DataSource,
+    private authService: AuthService,
   ) {}
 
   async createUser(body: CreateUserDto) {
@@ -62,7 +62,11 @@ export class UsersService {
     });
   }
 
-  async findByName(id: number) {}
+  async findById(id: number) {
+    return await this.userRepository.findOne({
+      where: { id },
+    });
+  }
 
   private async sendMemberJoinEmail(email: string, signupVerifyToken: string) {
     await this.emailService.sendMemberJoinVerification(
@@ -71,14 +75,44 @@ export class UsersService {
     );
   }
 
-  async verifyEmail(signupVerifyToken: string): Promise<string> {
-    throw new Error('Method not implemented');
+  async verifyEmail(signupVerifyToken: string): Promise<{
+    token: string;
+  }> {
+    const user = await this.userRepository.findOne({
+      where: {
+        signupVerifyToken,
+      },
+    });
+
+    if (!user) {
+      throw new NotFoundException('유저가 존재하지 않습니다.');
+    }
+
+    return this.authService.login({
+      id: user.id,
+      name: user.name,
+      email: user.email,
+    });
   }
 
-  async login(body: UserLoginDto) {
+  async login(body: UserLoginDto): Promise<{
+    token: string;
+  }> {
     const { email, password } = body;
 
-    throw new Error('Method not implemented');
+    const user = await this.userRepository.findOne({
+      where: { email, password },
+    });
+
+    if (!user) {
+      throw new NotFoundException('유저가 존재하지 않습니다.');
+    }
+
+    return this.authService.login({
+      id: user.id,
+      name: user.name,
+      email: user.email,
+    });
   }
 
   async getUserInfo(userId: number) {

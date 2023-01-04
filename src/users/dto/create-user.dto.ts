@@ -1,8 +1,10 @@
 import { BadRequestException } from '@nestjs/common';
+import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import { IsEmail, IsString, MaxLength, MinLength } from 'class-validator';
 
 export class CreateUserDto {
+  @ApiProperty({ description: 'The age of a cat', default: '1', example: '20' })
   @Transform(({ value, obj }) => {
     if (obj.password.includes(value.trim())) {
       throw new BadRequestException(
@@ -17,10 +19,30 @@ export class CreateUserDto {
   @MaxLength(10)
   name: string;
 
+  @ApiProperty()
   @IsString()
   @MinLength(3)
   password: string;
 
+  @ApiProperty()
   @IsEmail()
   email: string;
+}
+
+export class SuccessResponse {
+  @ApiProperty({
+    example: 'success',
+    description: 'status',
+  })
+  status: string;
+  @ApiProperty({
+    description: 'status',
+  })
+  message?: string;
+
+  @ApiProperty({
+    description: 'could contain some info',
+    type: CreateUserDto,
+  })
+  data?: CreateUserDto;
 }
