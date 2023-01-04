@@ -22,7 +22,7 @@ import { UsersModule } from './users/users.module';
       password: process.env.DATABASE_PASSWORD,
       database: 'test',
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      synchronize: false,
+      synchronize: true,
       migrationsRun: false,
       migrations: [__dirname + '/**/migrations/*.js'],
       migrationsTableName: 'migrations',
